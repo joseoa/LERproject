@@ -1,0 +1,56 @@
+﻿@page
+@model IndexModel
+@using Models
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome LER - Weather Broadcast System</h1>
+    <hr />
+    <form method="post" id="WeatherForm">
+        <input type="text" asp-for="zipCode" placeholder="Enter US Zip Code" id="txtZipCode" />
+        <input type="submit" />
+
+        <hr />
+        @if (Model.WeatherBroadcast != null)
+        {
+
+            <p>This is the weather broadcast for the next 7 days in Zip Code <label id="lblZipCode"> @Model.zipCode </label>  </p>
+
+            <table class="table table-striped table-hover">
+                <tr class="thead-dark">
+                    <th>Date</th>
+                    <th>Temp Min</th>
+                    <th>Temp Max</th>
+                    <th>Wind Speed Max</th>
+                </tr>
+                @foreach (var dayWeather in Model.WeatherBroadcast)
+                {
+                    <partial name="_WeatherPartial" model="dayWeather" />
+
+                }
+            </table>
+
+            <input type="submit" value="Refresh" onclick="sendPost(); return false;" />
+        }
+
+    </form>
+    <hr />
+
+    <script>
+
+        function sendPost()
+        {
+            var form = document.getElementById('WeatherForm');
+            var strZipCode = document.getElementById('lblZipCode').textContent;
+            document.getElementById("txtZipCode").value = strZipCode.trim();
+            form.submit();
+
+        }
+
+    </script>
+
+    
+
+</div>
